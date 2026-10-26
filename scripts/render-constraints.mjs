@@ -4,11 +4,11 @@ import { fileURLToPath } from 'node:url';
 import { isMainModule } from './main-module.mjs';
 import { buildRuleGraph } from './constraint-rule-view.mjs';
 const assets = fileURLToPath(new URL('../assets/', import.meta.url));
-export function buildConstraintGraph(catalog) {
+export function buildConstraintGraph(catalog, language) {
     if (catalog.schema !== 'birdview.constraint-catalog/v1' || !catalog.project?.name || !Array.isArray(catalog.sources)
         || !catalog.coverage || !Array.isArray(catalog.references))
         throw new Error('Invalid constraint catalog');
-    return buildRuleGraph(catalog);
+    return buildRuleGraph(catalog, language);
 }
 export function renderConstraintCatalog(catalog, _shell) {
     const payload = buildConstraintGraph(catalog);

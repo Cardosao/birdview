@@ -6,10 +6,10 @@ import { buildRuleGraph } from './constraint-rule-view.mjs';
 import type { ConstraintCatalog, ConstraintGraph, ReviewedConstraintCatalog } from './constraint-types.mjs';
 
 const assets = fileURLToPath(new URL('../assets/', import.meta.url));
-export function buildConstraintGraph(catalog: ConstraintCatalog): ConstraintGraph {
+export function buildConstraintGraph(catalog: ConstraintCatalog, language?: string): ConstraintGraph {
   if (catalog.schema !== 'birdview.constraint-catalog/v1' || !catalog.project?.name || !Array.isArray(catalog.sources)
     || !catalog.coverage || !Array.isArray(catalog.references)) throw new Error('Invalid constraint catalog');
-  return buildRuleGraph(catalog as ReviewedConstraintCatalog);
+  return buildRuleGraph(catalog as ReviewedConstraintCatalog, language);
 }
 
 export function renderConstraintCatalog(catalog: ConstraintCatalog, _shell?: string): string {

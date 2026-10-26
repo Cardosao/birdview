@@ -10,6 +10,12 @@
 node scripts/discover-constraints.mjs /path/to/repository /output/constraints.catalog.json "Project name"
 ```
 
+采集器从 AGENTS、CLAUDE、GEMINI、SKILL 文件、CONTRIBUTING.md、`.github/copilot-instructions.md` 和 `.cursor/rules` 开始。项目把规则放在其他文件（例如 `CONTEXT.md` 或 `docs/decisions.md`）时，用可重复的 `--entry` 指定这些已跟踪的 Markdown 文件；它们按指令入口处理，并继续跟随其本地引用。缺失或非 Markdown 路径记录在 `coverage.unresolved`，不会中断采集：
+
+```sh
+node scripts/discover-constraints.mjs /path/to/repository /output/constraints.catalog.json "Project name" --entry CONTEXT.md --entry docs/decisions.md
+```
+
 接着阅读采集来源，按下文编写已审查选择。集成交付在审查后使用 `birdview.mjs deliver`，不以来源页或独立规则页作为中间步骤。规则审查前可检查采集清单 JSON。
 
 采集器读取已提交的 HEAD，不修改仓库。枚举受 Git 跟踪的 AGENTS.md、CLAUDE.md、GEMINI.md、SKILL.md、根 CONTRIBUTING.md、GitHub Copilot 指令和 Cursor 规则，再递归跟进本地 Markdown 链接及反引号中的 Markdown 路径。保留原文、标题层级、行号和文件历史。排除可识别的夹具、归档及重复中文翻译并记录原因。引用表示发现路径，不代表权威或自动生效。技能按任务触发，目录指令按宿主继承规则适用。已实施的决策笔记仍是引用证据，不自动视为当前规则。

@@ -10,6 +10,12 @@ Use this route for a standalone constraint graph, a repository-wide inventory or
 node scripts/discover-constraints.mjs /path/to/repository /output/constraints.catalog.json "Project name"
 ```
 
+The collector starts from AGENTS, CLAUDE, GEMINI and SKILL files, CONTRIBUTING.md, `.github/copilot-instructions.md` and `.cursor/rules`. When a project keeps its rules elsewhere (for example `CONTEXT.md` or `docs/decisions.md`), name those tracked Markdown files with repeated `--entry` options; they are treated as instruction entries and their local references are followed. Missing or non-Markdown paths are reported in `coverage.unresolved` instead of failing:
+
+```sh
+node scripts/discover-constraints.mjs /path/to/repository /output/constraints.catalog.json "Project name" --entry CONTEXT.md --entry docs/decisions.md
+```
+
 Next read the collected sources and author the reviewed selection below. Integrated delivery uses `birdview.mjs deliver` after that review; do not generate source-only or standalone rule pages as intermediate steps. Inspect the collected catalog JSON before rule review.
 
 The collector reads committed HEAD without modifying the repository. It enumerates tracked AGENTS.md, CLAUDE.md, GEMINI.md, SKILL.md, root CONTRIBUTING.md, GitHub Copilot instructions and Cursor rules, then follows local Markdown links and quoted Markdown paths recursively. It preserves source text, heading hierarchy, line ranges and file history. It excludes recognized fixtures, archives and duplicate Chinese translations, retaining reasons. References indicate discovery, not authority or automatic activation. A skill is conditional on its task; a directory instruction applies only under the host's inheritance rules. Implemented decision notes remain reference evidence, not automatically current rules.
